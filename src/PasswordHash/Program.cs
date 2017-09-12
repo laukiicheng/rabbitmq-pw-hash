@@ -2,8 +2,8 @@
 {
     using System;
     using System.Linq;
-    using System.Text;
     using System.Security.Cryptography;
+    using System.Text;
 
     public class Program
     {
@@ -27,7 +27,7 @@
             Console.WriteLine("Salt: {0}", salt);
             Console.WriteLine("Password: {0}", password);
             // UTF8 of password 
-            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            var encoding = new UTF8Encoding();
             var utf8Encoded = encoding.GetBytes(password);
 
             // Concatenate salt with password
@@ -54,7 +54,10 @@
             random.NextBytes(buffer);
             var result = string.Concat(buffer.Select(x => x.ToString("X2")).ToArray());
             if (length % 2 == 0)
+            {
                 return result;
+            }
+                
             return result + random.Next(16).ToString("X");
         }
 
@@ -74,19 +77,9 @@
         public static string ByteArrayToString(byte[] ba)
         {
             var hex = new StringBuilder(ba.Length * 2);
-            var isEven = true;
-            foreach (byte b in ba)
+            foreach (var b in ba)
             {
-                if (isEven)
-                {
-                    hex.AppendFormat("{0:x2}", b);
-                    isEven = false;
-                }
-                else
-                {
-                    hex.AppendFormat("{0:x2} ", b);
-                    isEven = true;
-                }
+                hex.AppendFormat("{0:x2}", b);
 
             }
 
@@ -109,7 +102,7 @@
         public static string RemoveWhitespace(string input)
         {
             return new string(input.ToCharArray()
-                .Where(c => !Char.IsWhiteSpace(c))
+                .Where(c => !char.IsWhiteSpace(c))
                 .ToArray());
         }
     }
